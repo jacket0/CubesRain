@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,17 +13,11 @@ public class Spawner : MonoBehaviour
 
 	private ObjectPool<Cube> _pool;
 
-	public void ReleaseCube(Cube obj)
-	{
-		_pool.Release(obj);
-		obj.Released -= ReleaseCube;
-	}
-
 	private void Awake()
 	{
 		_pool = new(
 			createFunc: () => Instantiate(_cube),
-			actionOnGet: (obj) => ActionOnGet(obj),
+			actionOnGet: (obj) => ConfigureOnGet(obj),
 			actionOnRelease: (obj) => obj.gameObject.SetActive(false),
 			actionOnDestroy: (obj) => Destroy(obj),
 		collectionCheck: true,
@@ -30,7 +25,32 @@ public class Spawner : MonoBehaviour
 		maxSize: _poolMaxSize);
 	}
 
-	private void ActionOnGet(Cube obj)
+	private void Start()
+	{
+		StartCoroutine(CreateRepeating());
+		//InvokeRepeating(nameof(GetCube), 0f, _repeatRate);
+	}
+
+	private IEnumerator CreateRepeating()
+	{
+		var wait = new WaitForSeconds(_repeatRate);
+
+		do
+		{
+			GetCube();
+			yield return wait;
+		}
+		while (_pool.CountActive > 0);
+
+	}
+
+	public void ReleaseCube(Cube obj)
+	{
+		_pool.Release(obj);
+		obj.Released -= ReleaseCube;
+	}
+
+	private void ConfigureOnGet(Cube obj)
 	{
 		var pos = _originPoint.position;
 		pos.x += Random.Range(-_createRadius, _createRadius);
@@ -39,11 +59,6 @@ public class Spawner : MonoBehaviour
 		obj.StopVelocity();
 		obj.gameObject.SetActive(true);
 		obj.Released += ReleaseCube;
-	}
-
-	private void Start()
-	{
-		InvokeRepeating(nameof(GetCube), 0f, _repeatRate);
 	}
 
 	private void GetCube()
