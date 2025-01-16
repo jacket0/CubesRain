@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public abstract class Spawner<T> : MonoBehaviour where T : Creatable<T>
 {
