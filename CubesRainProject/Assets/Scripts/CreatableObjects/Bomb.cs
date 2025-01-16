@@ -8,9 +8,9 @@ public class Bomb : Creatable <Bomb>
 {
     private Exploder _exploder;
 
-    public override event Action<Bomb> Releasing;
+    public override event Action<Bomb> Released;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         _exploder = GetComponent<Exploder>();
@@ -29,9 +29,9 @@ public class Bomb : Creatable <Bomb>
 
     protected override IEnumerator WaitBeforeDeath()
     {
-        var lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
+        float lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
         float time = 0;
-        var color = _material.color;
+        Color color = _material.color;
 
         while (time != lifeTime)
         {
@@ -40,10 +40,11 @@ public class Bomb : Creatable <Bomb>
             _material.color = color;
 
             time = Mathf.MoveTowards(time, lifeTime, Time.deltaTime);
+
             yield return null;
         }
 
         _exploder.Explode();
-        Releasing?.Invoke(this);
+        Released?.Invoke(this);
     }
 }

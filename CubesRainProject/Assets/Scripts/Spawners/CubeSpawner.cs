@@ -7,13 +7,25 @@ public class CubeSpawner : Spawner<Cube>
 {
     [SerializeField] private float _repeatRate = 1f;
     [SerializeField] private float _createRadius = 2f;
+    [SerializeField] protected Transform _originPoint;
 
     public override event Action CountUpdated;
-    public event Action<Cube> BombCreating;
+    public event Action<Cube> CubeReleased;
 
     private void Start()
     {
         StartCoroutine(CreateRepeating());
+    }
+
+    protected override void ConfigureObject<R>(Cube obj)
+    {
+        Vector3 pos = _originPoint.position;
+        pos.x += Random.Range(-_createRadius, _createRadius);
+        pos.z += Random.Range(-_createRadius, _createRadius);
+        obj.transform.position = pos;
+        obj.StopVelocity();
+        obj.gameObject.SetActive(true);
+        obj.Released += ReleaseObject<R>;
     }
 
     private IEnumerator CreateRepeating()
@@ -22,10 +34,9 @@ public class CubeSpawner : Spawner<Cube>
 
         while (true)
         {
-            if (_pool.CountInactive > 0 || _pool.CountAll < _poolMaxSize)
+            if (CountSpawned - CountActive > 0 || CountSpawned < _poolMaxSize)
             {
-                GetObject<Cube>();
-                CountCreated++;
+                Spawn<Cube>();
                 CountUpdated?.Invoke();
             }
 
@@ -33,27 +44,10 @@ public class CubeSpawner : Spawner<Cube>
         }
     }
 
-    protected override void ConfigureOnGet<R>(Cube obj)
+    private void ReleaseObject<R>(Cube obj)
     {
-        var pos = _originPoint.position;
-        pos.x += Random.Range(-_createRadius, _createRadius);
-        pos.z += Random.Range(-_createRadius, _createRadius);
-        obj.transform.position = pos;
-        obj.StopVelocity();
-        obj.gameObject.SetActive(true);
-        obj.Releasing += ReleaseObject<R>;
-    }
-
-    public override void ReleaseObject<R>(Cube obj)
-    {
-        BombCreating?.Invoke(obj);
-        _pool.Release(obj);
+        CubeReleased?.Invoke(obj);
+       obj.Released -= ReleaseObject<R>;
         CountUpdated?.Invoke();
-        obj.Releasing -= ReleaseObject<R>;
-    }
-
-    protected override void GetObject<R>(R obj = null)
-    {
-        _pool.Get();
     }
 }

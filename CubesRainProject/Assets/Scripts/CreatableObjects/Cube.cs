@@ -8,10 +8,10 @@ public class Cube : Creatable<Cube>
 {
     private bool _isTouchedPlatform = false;
 
-    public override event Action<Cube> Releasing;
+    public override event Action<Cube> Released;
     public event Action<Vector3> PositionSetted;
 
-    private void Awake() =>
+    private new void Awake() =>
         base.Awake();
 
     private void OnDisable()
@@ -43,7 +43,9 @@ public class Cube : Creatable<Cube>
     protected override IEnumerator WaitBeforeDeath()
     {
         var time = new WaitForSeconds(Random.Range(_minLifeTime, _maxLifeTime));
+
         yield return time;
-        Releasing?.Invoke(this);
+
+        Released?.Invoke(this);
     }
 }

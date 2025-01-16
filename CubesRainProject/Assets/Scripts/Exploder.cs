@@ -11,11 +11,11 @@ public class Exploder : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, _radius);
 
-        foreach (var cube in GetExploding(colliders))
-            cube.AddExplosionForce(_force, transform.position, _radius);
+        foreach (Rigidbody exploding in GetExplodingObjects(colliders))
+            exploding.AddExplosionForce(_force, transform.position, _radius);
     }
 
-    private List<Rigidbody> GetExploding(Collider[] colliders)
+    private List<Rigidbody> GetExplodingObjects(Collider[] colliders)
     {
         List<Rigidbody> cubes = new List<Rigidbody>();
 

@@ -363,6 +363,7 @@
 "Assets/Scripts/GUI/CubesTextDisplay.cs"
 "Assets/Scripts/GUI/SpawnerTextDisplay.cs"
 "Assets/Scripts/Platforms/Platform.cs"
+"Assets/Scripts/PoolManager.cs"
 "Assets/Scripts/Spawners/BombSpawner.cs"
 "Assets/Scripts/Spawners/CubeSpawner.cs"
 "Assets/Scripts/Spawners/Spawner.cs"

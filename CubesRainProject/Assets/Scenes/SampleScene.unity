@@ -233,7 +233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 8207663121947264089, guid: 2be7c313a67dfbe4ca153248f5924fd0, type: 3}
-  _originPoint: {fileID: 4075784101892580531, guid: 4b6c4f2c337734f44b1c623b3dee13b2, type: 3}
   _poolCapacity: 5
   _poolMaxSize: 10
   _cubeSpawner: {fileID: 603287919}

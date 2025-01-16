@@ -12,7 +12,7 @@ public abstract class Creatable <T> : MonoBehaviour where T : MonoBehaviour
     protected Rigidbody _rigidbody;
     protected Material _material;
 
-    public abstract event Action<T> Releasing;
+    public abstract event Action<T> Released;
 
     protected void Awake()
     {

@@ -7,48 +7,33 @@ public class BombSpawner : Spawner<Bomb>
 
     public override event Action CountUpdated;
 
-    private void Awake()
-    {
-        _pool = new(
-            createFunc: () => Instantiate(_prefab),
-            actionOnGet: (obj) => ConfigureOnGet<Bomb>(obj),
-            actionOnRelease: (obj) => obj.gameObject.SetActive(false),
-            actionOnDestroy: (obj) => Destroy(obj),
-            collectionCheck: true,
-            defaultCapacity: _poolCapacity,
-            maxSize: _poolMaxSize
-        );
-    }
-
     private void OnEnable()
     {
-        _cubeSpawner.BombCreating += GetObject;
+        _cubeSpawner.CubeReleased += SpawnBomb;
     }
 
     private void OnDisable()
     {
-        _cubeSpawner.BombCreating -= GetObject;
+        _cubeSpawner.CubeReleased -= SpawnBomb;
     }
 
-    public override void ReleaseObject<R>(Bomb obj)
-    {
-        _pool.Release(obj);
-        obj.Releasing -= ReleaseObject<R>;
-        CountUpdated?.Invoke();
-    }
-
-    protected override void ConfigureOnGet<R>(Bomb obj)
+    protected override void ConfigureObject<R>(Bomb obj)
     {
         obj.StopVelocity();
         obj.gameObject.SetActive(true);
-        obj.Releasing += ReleaseObject<R>;
+        obj.Released += ReleaseObject<R>;
     }
 
-    protected override void GetObject<Cube>(Cube cube = null)
+    private void ReleaseObject<R>(Bomb obj)
     {
-        Bomb bomb = _pool.Get();
+        obj.Released -= ReleaseObject<R>;
+        CountUpdated?.Invoke();
+    }
+
+    private void SpawnBomb<Cube>(Cube cube) where Cube : Creatable<Cube>
+    {
+        Bomb bomb = Spawn<Bomb>();
         bomb.transform.position = cube.transform.position;
         CountUpdated?.Invoke();
-        CountCreated++;
     }
 }
