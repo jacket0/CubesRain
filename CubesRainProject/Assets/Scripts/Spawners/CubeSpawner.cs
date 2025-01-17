@@ -7,7 +7,7 @@ public class CubeSpawner : Spawner<Cube>
 {
     [SerializeField] private float _repeatRate = 1f;
     [SerializeField] private float _createRadius = 2f;
-    [SerializeField] protected Transform _originPoint;
+    [SerializeField] private Transform _originPoint;
 
     public override event Action CountUpdated;
     public event Action<Cube> CubeReleased;
@@ -17,7 +17,7 @@ public class CubeSpawner : Spawner<Cube>
         StartCoroutine(CreateRepeating());
     }
 
-    protected override void ConfigureObject<R>(Cube obj)
+    protected override void ConfigureObject(Cube obj)
     {
         Vector3 pos = _originPoint.position;
         pos.x += Random.Range(-_createRadius, _createRadius);
@@ -25,7 +25,7 @@ public class CubeSpawner : Spawner<Cube>
         obj.transform.position = pos;
         obj.StopVelocity();
         obj.gameObject.SetActive(true);
-        obj.Released += ReleaseObject<R>;
+        obj.Released += ReleaseObject;
     }
 
     private IEnumerator CreateRepeating()
@@ -36,7 +36,7 @@ public class CubeSpawner : Spawner<Cube>
         {
             if (CountSpawned - CountActive > 0 || CountSpawned < _poolMaxSize)
             {
-                Spawn<Cube>();
+                Spawn();
                 CountUpdated?.Invoke();
             }
 
@@ -44,10 +44,10 @@ public class CubeSpawner : Spawner<Cube>
         }
     }
 
-    private void ReleaseObject<R>(Cube obj)
+    private void ReleaseObject(Cube obj)
     {
         CubeReleased?.Invoke(obj);
-       obj.Released -= ReleaseObject<R>;
+       obj.Released -= ReleaseObject;
         CountUpdated?.Invoke();
     }
 }

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public abstract class SpawnerTextDisplay<T> : MonoBehaviour where T : Creatable<T>
 {
-    [SerializeField] protected TextMeshProUGUI _spawnCountText;
-    [SerializeField] protected TextMeshProUGUI _createdCountText;
-    [SerializeField] protected TextMeshProUGUI _activeCountText;
-    [SerializeField] protected Spawner<T> _spawner;
+    [SerializeField] private TextMeshProUGUI _spawnCountText;
+    [SerializeField] private TextMeshProUGUI _createdCountText;
+    [SerializeField] private TextMeshProUGUI _activeCountText;
+    [SerializeField] private Spawner<T> _spawner;
 
     private void OnEnable()
     {

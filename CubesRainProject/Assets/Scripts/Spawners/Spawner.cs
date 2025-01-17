@@ -3,9 +3,10 @@ using UnityEngine;
 
 public abstract class Spawner<T> : MonoBehaviour where T : Creatable<T>
 {
-    [SerializeField] protected T _prefab;
     [SerializeField] protected int _poolCapacity = 5;
     [SerializeField] protected int _poolMaxSize = 5;
+
+    [SerializeField] private T _prefab;
 
     private PoolManager<T> _poolManager;
 
@@ -20,14 +21,14 @@ public abstract class Spawner<T> : MonoBehaviour where T : Creatable<T>
         _poolManager = new PoolManager<T>(_prefab, _poolCapacity, _poolMaxSize);
     }
 
-    protected abstract void ConfigureObject<R>(T obj) where R : Creatable<R>;
-
-    public T Spawn<R>() where R : Creatable<R>
+    public T Spawn()
     {
-        var obj = _poolManager.GetObject<T>();
-        ConfigureObject<T>(obj);
+        var obj = _poolManager.GetObject();
+        ConfigureObject(obj);
         CountCreated++;
 
         return obj;
     }
+
+    protected abstract void ConfigureObject(T obj);
 }

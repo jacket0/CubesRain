@@ -193,6 +193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -232,9 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7488a82ab44f111408b5174b729d0c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 8207663121947264089, guid: 2be7c313a67dfbe4ca153248f5924fd0, type: 3}
   _poolCapacity: 5
-  _poolMaxSize: 10
+  _poolMaxSize: 5
+  _prefab: {fileID: 8207663121947264089, guid: 2be7c313a67dfbe4ca153248f5924fd0, type: 3}
   _cubeSpawner: {fileID: 603287919}
 --- !u!4 &281804048
 Transform:
@@ -375,6 +379,10 @@ PrefabInstance:
     - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
       propertyPath: m_Name
       value: Platform (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -694,7 +702,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 623022748}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,6 +1112,10 @@ PrefabInstance:
     - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
       propertyPath: m_Name
       value: Platform (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2051,6 +2063,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2192,6 +2208,10 @@ PrefabInstance:
     - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
       propertyPath: m_Name
       value: Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930037674791752767, guid: 4cc0131bcec44784ab4820cba50c1171, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

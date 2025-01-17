@@ -14,38 +14,46 @@ public class Cube : Creatable<Cube>
     private new void Awake() =>
         base.Awake();
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Platform platform))
+        {
+            TouchPlatform();
+        }
+    }
+
     private void OnDisable()
     {
         _isTouchedPlatform = false;
-        _material.color = Color.white;
+        Material.color = Color.white;
 
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
+        if (Coroutine != null)
+            StopCoroutine(Coroutine);
     }
 
     public override void StopVelocity()
     {
-        _rigidbody.velocity = Vector3.zero;
-        _rigidbody.angularVelocity = Vector3.zero;
-    }
-
-    public void TouchPlatform()
-    {
-        if (_isTouchedPlatform == false)
-        {
-            _isTouchedPlatform = true;
-            _material.color = Random.ColorHSV();
-            _coroutine = StartCoroutine(WaitBeforeDeath());
-            PositionSetted?.Invoke(transform.position);
-        }
+        Rigidbody.velocity = Vector3.zero;
+        Rigidbody.angularVelocity = Vector3.zero;
     }
 
     protected override IEnumerator WaitBeforeDeath()
     {
-        var time = new WaitForSeconds(Random.Range(_minLifeTime, _maxLifeTime));
+        var time = new WaitForSeconds(Random.Range(MinLifeTime, MaxLifeTime));
 
         yield return time;
 
         Released?.Invoke(this);
+    }
+
+    private void TouchPlatform()
+    {
+        if (_isTouchedPlatform == false)
+        {
+            _isTouchedPlatform = true;
+            Material.color = Random.ColorHSV();
+            Coroutine = StartCoroutine(WaitBeforeDeath());
+            PositionSetted?.Invoke(transform.position);
+        }
     }
 }

@@ -17,22 +17,22 @@ public class BombSpawner : Spawner<Bomb>
         _cubeSpawner.CubeReleased -= SpawnBomb;
     }
 
-    protected override void ConfigureObject<R>(Bomb obj)
+    protected override void ConfigureObject(Bomb obj)
     {
         obj.StopVelocity();
         obj.gameObject.SetActive(true);
-        obj.Released += ReleaseObject<R>;
+        obj.Released += ReleaseObject;
     }
 
-    private void ReleaseObject<R>(Bomb obj)
+    private void ReleaseObject(Bomb obj)
     {
-        obj.Released -= ReleaseObject<R>;
+        obj.Released -= ReleaseObject;
         CountUpdated?.Invoke();
     }
 
-    private void SpawnBomb<Cube>(Cube cube) where Cube : Creatable<Cube>
+    private void SpawnBomb(Cube cube)
     {
-        Bomb bomb = Spawn<Bomb>();
+        Bomb bomb = Spawn();
         bomb.transform.position = cube.transform.position;
         CountUpdated?.Invoke();
     }

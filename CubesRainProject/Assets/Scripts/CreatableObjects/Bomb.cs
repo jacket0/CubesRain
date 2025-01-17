@@ -18,26 +18,26 @@ public class Bomb : Creatable <Bomb>
 
     private void OnEnable()
     {
-        _coroutine = StartCoroutine(WaitBeforeDeath());
+        Coroutine = StartCoroutine(WaitBeforeDeath());
     }
 
     public override void StopVelocity()
     {
-        _rigidbody.velocity = Vector3.zero;
-        _rigidbody.angularVelocity = Vector3.zero;
+        Rigidbody.velocity = Vector3.zero;
+        Rigidbody.angularVelocity = Vector3.zero;
     }
 
     protected override IEnumerator WaitBeforeDeath()
     {
-        float lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
+        float lifeTime = Random.Range(MinLifeTime, MaxLifeTime);
         float time = 0;
-        Color color = _material.color;
+        Color color = Material.color;
 
         while (time != lifeTime)
         {
             float alpha = Mathf.Lerp(1, 0, time / lifeTime);
             color.a = alpha;
-            _material.color = color;
+            Material.color = color;
 
             time = Mathf.MoveTowards(time, lifeTime, Time.deltaTime);
 

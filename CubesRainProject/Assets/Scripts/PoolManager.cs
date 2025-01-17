@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 public class PoolManager<T> where T : Creatable<T>
 {
-    protected ObjectPool<T> _pool;
+    private ObjectPool<T> _pool;
 
     public int CountSpawned => _pool.CountAll;
     public int CountActive => _pool.CountActive;
@@ -12,31 +12,31 @@ public class PoolManager<T> where T : Creatable<T>
     {
         _pool = new(
             createFunc: () => Object.Instantiate(prefab),
-            actionOnGet: (obj) => ConfigureOnGet<T>(obj),
+            actionOnGet: (obj) => ConfigureOnGet(obj),
             actionOnRelease: (obj) => obj.gameObject.SetActive(false),
-            actionOnDestroy: (obj) => Object.Destroy(obj),
+            actionOnDestroy: (obj) => Object.Destroy(obj.gameObject),
             collectionCheck: true,
             defaultCapacity: capacity,
             maxSize: maxSize
         );
     }
 
-    public T GetObject<R>(R obj = null) where R : Creatable<R>
+    public T GetObject(T obj = null)
     {
         return _pool.Get();
     }
 
-    private void ConfigureOnGet<R>(T obj) where R : Creatable<R>
+    private void ConfigureOnGet(T obj)
     {
         obj.transform.position = obj.transform.position;
         obj.StopVelocity();
         obj.gameObject.SetActive(true);
-        obj.Released += ReleaseObject<R>;
+        obj.Released += ReleaseObject;
     }
 
-    private void ReleaseObject<R>(T obj) where R : Creatable<R>
+    private void ReleaseObject(T obj) 
     {
         _pool.Release(obj);
-        obj.Released -= ReleaseObject<R>;
+        obj.Released -= ReleaseObject;
     }
 }
